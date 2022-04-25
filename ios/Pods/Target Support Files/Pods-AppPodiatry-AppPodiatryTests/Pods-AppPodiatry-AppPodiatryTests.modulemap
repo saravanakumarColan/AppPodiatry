@@ -1,0 +1,6 @@
+module Pods_AppPodiatry_AppPodiatryTests {
+  umbrella header "Pods-AppPodiatry-AppPodiatryTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
