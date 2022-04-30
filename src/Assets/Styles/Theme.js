@@ -76,7 +76,7 @@ const Theme = StyleSheet.create({
 
     },
     AddEmailinput: {
-        color: '#263238',
+        color: '#747474',
         width: width / 100 * 70,
         height: height / 100 * 6.5,
         margin: width / 100 * 2,

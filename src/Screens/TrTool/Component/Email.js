@@ -96,7 +96,7 @@ export default class SMS extends Component {
         this.setState({ listingToggle: false });
         console.log("social");
         var getListId = social.filter(s =>  s.IsSelected === true );
-        var getSId = getListId.length > 0 ? getListId[0].SocialId : ''; //social.filter(s =>  s.IsSelected === true )[0].SocialId;
+        var getSId = social.length > 0 ? social[0].SocialId : ''; //social.filter(s =>  s.IsSelected === true )[0].SocialId;
         console.log("getListId 1" + getListId);
         this.setState({ isActive: getSId });
         // if(getListId === undefined){
@@ -139,7 +139,7 @@ export default class SMS extends Component {
                         }}>
                         <View style={[Theme.SocialMediaItem, this.state.radioValue === data.Provider && styles.ActiveItem]} >
                             {this.state.radioValue === data.Provider ?
-                                <Image style={Theme.RadioImg} source={require('./../../../Assets/Images/Icons/RadioActive.png')} />
+                                <Image style={Theme.RadioImg} source={require('./../../../Assets/Images/Icons/tick.png')} />
                                 : <Image style={Theme.RadioImg} source={require('./../../../Assets/Images/Icons/Radio.png')} />
                             }
                             <Image style={[Theme.SocialMediaImg]}
@@ -160,7 +160,7 @@ export default class SMS extends Component {
         //
         if (this.state.receiverList.filter(s => s.isPhoneValid === false).length > 0 ||
             this.state.receiverList.filter(s => s.isNameValid === false).length > 0) {
-            this.setState({ phoneErrorText: 'Email and User name is invalid' });
+            this.setState({ phoneErrorText: 'Email and/or First Name Invalid' });
             return;
         }
         else { this.setState({ phoneErrorText: false }); }
@@ -229,6 +229,52 @@ export default class SMS extends Component {
         //this.setState({ receiverList, receiverInfo: {} });
     }
     AddAnotherNo = () => {
+        let { receiverList } = this.state;
+        console.log('Data added ===>',receiverList.length);
+
+        if(receiverList.length != 0){
+            console.log('Data added1 ===>',receiverList[receiverList.length-1].email == '');
+            if(receiverList[receiverList.length-1].email == ''){
+                receiverList[receiverList.length-1].isPhoneValid = false
+                receiverList[receiverList.length-1].isPhoneTouched = true
+                console.log('Data added2 ===>',receiverList);
+                this.setState({ receiverList });
+
+            }else if (receiverList[receiverList.length-1].first_name == '') {
+                receiverList[receiverList.length-1].isNameValid = false
+                receiverList[receiverList.length-1].isNameTouched = true
+                console.log('Data added2 ===>',receiverList);
+                this.setState({ receiverList });
+                
+            }else{
+
+        
+        
+                console.log('AddOnetherNo');
+                // New 
+                var newObj = {
+                    email: '',
+                    first_name: '',
+                    last_name: '',
+                    keep_sending: false,
+                    isPhoneValid: false,
+                    isNameValid: false,
+                    isPhoneTouched: false,
+                    isNameTouched: false,
+        
+                };
+                console.log('newObj');
+                console.log(newObj);
+                receiverList.push(newObj);
+                this.setState({
+                    receiverList
+                });
+            }
+
+        }else{
+
+        
+        
         console.log('AddOnetherNo');
         // New 
         var newObj = {
@@ -244,11 +290,11 @@ export default class SMS extends Component {
         };
         console.log('newObj');
         console.log(newObj);
-        let { receiverList } = this.state;
         receiverList.push(newObj);
         this.setState({
             receiverList
         });
+    }
 
         // Exisiting 
         //console.log(this.state.receiverInfo);
@@ -269,9 +315,20 @@ export default class SMS extends Component {
         var rList = this.state.receiverList;
         //var index = rList[item];      
         //rList.splice(receiverfilter)
-        rList.splice(item, 1);
-        this.setState({ receiverList: rList });
-        return rList;
+        if(rList.length == 1){
+            this.AddAnotherNo();
+            if(rList[0].email != '' && rList[0].first_name != ''){
+                rList.splice(item, 1);
+                this.setState({ receiverList: rList });
+                return rList;
+            }
+            
+        }else{
+            rList.splice(item, 1);
+            this.setState({ receiverList: rList });
+            return rList;
+        }
+       
 
     }
 
@@ -486,7 +543,7 @@ export default class SMS extends Component {
                                         placeholderTextColor="#000"
                                         //this.state.emailValidation == false ? {color: '#263238' } : {color: 'red'}
                                         //keyboardType='email'
-                                        value={item.user_no}
+                                        value={item.email}
                                         onChangeText={(e) => {
                                             /*this.emailValidate(e);*/
                                             let list = this.state.receiverList;
@@ -504,13 +561,13 @@ export default class SMS extends Component {
                                     />
                                 </View>
                                 {!item.isPhoneValid && item.isPhoneTouched &&
-                                    <Text style={Theme.TextError}>Email is not correct</Text>}
+                                    <Text style={Theme.TextError}>Please add valid Email of recipient</Text>}
                             </View>
                             <View style={[Theme.FormGroup, { marginBottom: 0, }]}>
                                 <View style={[Theme.FormInputWrp]}>
                                     <FormIcon FormIcon="User" />
                                     <TextInput
-                                        value={item.user_name}
+                                        value={item.first_name}
                                         onChangeText={(e) => {
                                             let list = this.state.receiverList;
                                             let listIndex = key;
@@ -529,7 +586,7 @@ export default class SMS extends Component {
                                     />
                                 </View>
                                 {!item.isNameValid && item.isNameTouched &&
-                                    <Text style={Theme.TextError}>User can not be empty</Text>}
+                                    <Text style={Theme.TextError}>Please add first name of recipient</Text>}
                             </View>
                         </View>
 

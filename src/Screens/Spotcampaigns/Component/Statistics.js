@@ -78,7 +78,7 @@ export default class Statistics extends Component {
         console.log('getSpotCampaignsData');
         console.log(data.topic_overall);
 
-        this.setState({ topicOverall: data.topic_overall.topics, overall: data.campaign_overall, total: data.total })
+        this.setState({ topicOverall: data?.topic_overall?.topics, overall: data.campaign_overall, total: data.total })
 
         console.log('overall');
         console.log(this.state.topicOverall);
@@ -160,8 +160,8 @@ export default class Statistics extends Component {
     render() {
 
         let hisData = this.props.DataStatistics;
-        let total = hisData.total;
-        let overall = hisData.campaign_overall;
+        let total = this.state.total;
+        let overall = this.state.overall;
 
 
         let HisList = this.props.topics;

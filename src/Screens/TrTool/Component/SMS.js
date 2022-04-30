@@ -103,8 +103,8 @@ export default class SMS extends Component {
         this.setState({ listingToggle: false });
 
         var getListId = social.filter(s => s.IsSelected === true);
-        var getSId = getListId.length > 0 ? getListId[0].SocialId : ''; //social.filter(s =>  s.IsSelected === true )[0].SocialId;
-        console.log("getListId 1" + getSId);
+        var getSId = social.length > 0 ? social[0].SocialId : ''; //social.filter(s =>  s.IsSelected === true )[0].SocialId;
+        console.log("getListId 2" + JSON.stringify(social));
         this.setState({ isActive: getSId });
 
         // console.log('providersSocialList ');
@@ -141,7 +141,7 @@ export default class SMS extends Component {
                         }}>
                         <View style={[Theme.SocialMediaItem, this.state.radioValue === data.Provider && styles.ActiveItem]} >
                             {this.state.radioValue === data.Provider ?
-                                <Image style={Theme.RadioImg} source={require('./../../../Assets/Images/Icons/RadioActive.png')} />
+                                <Image style={Theme.RadioImg} source={require('./../../../Assets/Images/Icons/tick.png')} />
                                 : <Image style={Theme.RadioImg} source={require('./../../../Assets/Images/Icons/Radio.png')} />
                             }
                             <Image style={[Theme.SocialMediaImg]}
@@ -166,7 +166,7 @@ export default class SMS extends Component {
         //this.state.receiverList.filter(s => s.number === '').length > 0
         if (this.state.receiverList.filter(s => s.isPhoneValid === false).length > 0 ||
             this.state.receiverList.filter(s => s.isNameValid === false).length > 0) {
-            this.setState({ phoneErrorText: 'Phone number and First name is invalid' });
+            this.setState({ phoneErrorText: 'Phone Number and/or First Name Invalid' });
             return;
         }
 
@@ -230,6 +230,48 @@ export default class SMS extends Component {
     }
     AddAnotherNo = () => {
         console.log('AddOnetherNo');
+        let { receiverList } = this.state;
+
+        if(receiverList.length != 0){
+            if(receiverList[receiverList.length-1].number == ''){
+                receiverList[receiverList.length-1].isPhoneValid = false
+                receiverList[receiverList.length-1].isPhoneTouched = true
+                console.log('Data added2 ===>',receiverList);
+                this.setState({ receiverList });
+
+            }else if (receiverList[receiverList.length-1].first_name == '') {
+                receiverList[receiverList.length-1].isNameValid = false
+                receiverList[receiverList.length-1].isNameTouched = true
+                console.log('Data added2 ===>',receiverList);
+                this.setState({ receiverList });
+                
+            }else{
+
+        
+        
+                console.log('AddOnetherNo');
+                // New 
+                var newObj = {
+                    number: '',
+                    first_name: '',
+                    last_name: '',
+                    keep_sending: false,
+                    isPhoneValid: false,
+                    isNameValid: false,
+                    isPhoneTouched: false,
+                    isNameTouched: false,
+        
+                };
+                console.log('newObj');
+                console.log(newObj);
+                receiverList.push(newObj);
+                this.setState({
+                    receiverList
+                });
+            }
+
+        }else{
+
         // New 
         var newObj = {
             number: '',
@@ -243,11 +285,11 @@ export default class SMS extends Component {
         };
         console.log('newObj');
         console.log(newObj);
-        let { receiverList } = this.state;
         receiverList.push(newObj);
         this.setState({
             receiverList
         });
+    }
 
         // Exisiting 
         //console.log(this.state.receiverInfo);
@@ -268,9 +310,22 @@ export default class SMS extends Component {
         var rList = this.state.receiverList;
         //var index = rList[item];      
         //rList.splice(receiverfilter)
-        rList.splice(item, 1);
-        this.setState({ receiverList: rList });
-        return rList;
+        console.log('Remove====>',rList.length)
+        if(rList.length == 1){
+            this.AddAnotherNo();
+            if(rList[0].number != '' && rList[0].first_name != ''){
+                rList.splice(item, 1);
+                this.setState({ receiverList: rList });
+                return rList;
+            }
+            
+        }else{
+            rList.splice(item, 1);
+            this.setState({ receiverList: rList });
+            return rList;
+        }
+       
+      
 
     }
 
@@ -460,7 +515,7 @@ export default class SMS extends Component {
                     }
 
                 </View>
-                <TrToolInfo Title="Add Phone number"
+                <TrToolInfo Title="Add Phone Number"
                     Desc="Enter ONE phone number into field below and the patient's FIRST name. Another field will appear if you need to add more than one."
                 />
                 {/** Add another email form **/}
@@ -474,9 +529,9 @@ export default class SMS extends Component {
                                         style={Theme.AddEmailinput}
                                         placeholder="Phone Number"
                                         placeholderTextColor="#000"
-                                        keyboardType='numeric'
+                                        keyboardType='phone-pad'
                                         //maxLength={11}
-                                        value={item.user_no}
+                                        value={item.number}
                                         onChangeText={(e, index) => {
                                             let list = this.state.receiverList;
                                             let listIndex = key;
@@ -493,14 +548,14 @@ export default class SMS extends Component {
                                     />
                                 </View>
                                 {!item.isPhoneValid && item.isPhoneTouched &&
-                                    <Text style={Theme.TextError}>Phone number is not correct</Text>}
+                                    <Text style={Theme.TextError}>Please add valid cell number of recipient</Text>}
                             </View>
 
                             <View style={[Theme.FormGroup, { marginBottom: 0, }]}>
                                 <View style={[Theme.FormInputWrp]}>
                                     <FormIcon FormIcon="User" />
                                     <TextInput
-                                        value={item.user_name}
+                                        value={item.first_name}
                                         onChangeText={(e) => {
                                             let list = this.state.receiverList;
                                             let listIndex = key;
