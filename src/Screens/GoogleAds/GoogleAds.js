@@ -106,7 +106,7 @@ export default class GoogleAds extends Component {
                         <View style={[Theme.ChartWrp]}>
                             {/*AdsLineChart*/}
                              
-                            {/* <AdsLineChart data={this.state.visitData} dataOne={this.state.AdsDaily} vistiTotal={this.state.visitDataTotal} /> */}
+                            <AdsLineChart data={this.state.visitData} dataOne={this.state.AdsDaily} vistiTotal={this.state.visitDataTotal} />
 
                             {/* <View style={[styles.ChartFooter]}>
                                <Text style={[Theme.ChartFooterText]}>Website Visits</Text>

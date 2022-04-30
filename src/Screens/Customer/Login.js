@@ -251,7 +251,7 @@ export default class Login extends Component {
                                         onPress={() => this.props.navigation.navigate("Reset")}>
                                         <View style={[Theme.BtnLog, styles.BtnWhite]}>
                                             <Text style={[styles.ResetText]}>RESET </Text>
-                                            <Text style={[styles.ResetText]}> Password</Text>
+                                            <Text style={[styles.ResetText]}> PASSWORD</Text>
                                         </View>
 
                                     </TouchableOpacity>
@@ -259,7 +259,7 @@ export default class Login extends Component {
                                 </View>
 
                                 <View style={[styles.SignUpWrp]}>
-                                    <Text style={[styles.newCustomer]}>Not Yet member </Text>
+                                    <Text style={[styles.newCustomer]}>Not a member yet?</Text>
                                     <TouchableOpacity style={{}}
                                         onPress={() => this.props.navigation.navigate("Registration")}>
                                         <Text style={[styles.SignUpText]}>Sign Up Now</Text>

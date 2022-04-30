@@ -21,11 +21,11 @@ export async function getSpotCampaignsData() {
     var userId = await AsyncStorage.getItem("userid");    
     var dateRange = await AsyncStorage.getItem("rangeVal");
     console.log('dateRange api');
-    console.log(dateRange);
+    console.log(dateRange+'===='+userId);
     var res = await GetIdFetch("v1/spot_campaigns/" + userId + "?range=" + dateRange );
 
     console.log("Spot Campaigns Data");
-    console.log(res);
+    console.log( "Spot Campaigns Data====>",res);
     return res;
 
 }
@@ -115,7 +115,8 @@ export async function postLoginData(loginVal) {
         await AsyncStorage.setItem("firstName", response.data.firstName);
         await AsyncStorage.setItem("lastName", response.data.lastName);
         await AsyncStorage.setItem("refreshToken", response.refreshToken);
-      
+        await AsyncStorage.setItem("isLogin", 'true');
+
 
         var expiryTime = new Date();
         expiryTime.setHours(expiryTime.getHours() + 1);
@@ -161,6 +162,8 @@ export async function logoutUser() {
     await AsyncStorage.setItem("email", "");
     await AsyncStorage.setItem("firstName", "");
     await AsyncStorage.setItem("lastName", "");
+    await AsyncStorage.setItem("isLogin", 'false');
+
 }
 export async function sendSMSTRData(values) { 
     var userId = await AsyncStorage.getItem("userid");

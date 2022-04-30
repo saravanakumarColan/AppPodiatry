@@ -178,6 +178,8 @@ function App() {
     //}
 
     return (
+        <SafeAreaView style={{flex: 1,backgroundColor:'#ffff'}}>
+
         <View style={{ flex: 1 }}>
             <NavigationContainer>
                 <LoginStackScreen />
@@ -185,6 +187,8 @@ function App() {
 
             {/*<LineChartCommon/>*/}
         </View>
+        </SafeAreaView>
+
 
     );
     //render() {
