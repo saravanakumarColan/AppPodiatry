@@ -41,6 +41,8 @@ export default class RegisterRequest extends Component {
                         <View style={[styles.SuccessWrp]}>                                    
                             <Text style={[styles.Text]}>Registration Successful </Text>
                             <Text style={[styles.ModalFootertext, {color:'#5f6676'}]}>Your request has been received. A team-member will be contacting you within 24 hours to complete the registration process. Thank you.</Text>
+                            <Text style={[styles.ModalFootertext, {color:'#5f6676'}]}>If you have any questions in the meantime, feel free to give us a call at (718) 475-9449.</Text>
+
                         </View>
                         <View style={[styles.BtnWrp]}>
                                 
